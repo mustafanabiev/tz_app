@@ -46,4 +46,15 @@ class HomeCubit extends Cubit<HomeState> {
       debugPrint(e.toString());
     }
   }
+
+  String capitalizeFirstLetter(String input) {
+    final String text = input.trim();
+    List<String> words = text.split(" ");
+    for (int i = 0; i < words.length; i++) {
+      if (words[i].isNotEmpty) {
+        words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+      }
+    }
+    return words.join(" ");
+  }
 }

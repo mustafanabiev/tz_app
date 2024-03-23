@@ -199,10 +199,16 @@ class PassengersView extends StatelessWidget {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             await context.read<HomeCubit>().getDriverData(
-                                  departureCity:
-                                      departureController.text.trim(),
-                                  destinationCity:
-                                      destinationController.text.trim(),
+                                  departureCity: context
+                                      .read<HomeCubit>()
+                                      .capitalizeFirstLetter(
+                                        departureController.text,
+                                      ),
+                                  destinationCity: context
+                                      .read<HomeCubit>()
+                                      .capitalizeFirstLetter(
+                                        destinationController.text,
+                                      ),
                                   date: state.date ??
                                       DateFormat('yyyy-MM-dd')
                                           .format(DateTime.now()),
