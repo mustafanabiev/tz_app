@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tz_app/core/ui/app_colors.dart';
+import 'package:tz_app/core/ui/constants/app_colors.dart';
 import 'package:tz_app/data/model/drive_model.dart';
-import 'package:tz_app/presentation/widgets/custom_text.dart';
-import 'package:tz_app/presentation/widgets/lines.dart';
+import 'package:tz_app/presentation/home/widgets/custom_text.dart';
+import 'package:tz_app/presentation/home/widgets/lines.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({

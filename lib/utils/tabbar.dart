@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tz_app/core/ui/app_colors.dart';
-import 'package:tz_app/core/ui/app_text.dart';
-import 'package:tz_app/presentation/cubit/tab_bar/tab_bar_cubit.dart';
+import 'package:tz_app/core/ui/constants/app_colors.dart';
+import 'package:tz_app/core/ui/constants/app_text.dart';
+import 'package:tz_app/presentation/home/cubit/tab_bar/tab_bar_cubit.dart';
 
 TabBar buildTabBar(
   int state,

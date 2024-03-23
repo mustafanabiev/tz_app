@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tz_app/core/enum/fetch_status.dart';
-import 'package:tz_app/core/ui/app_colors.dart';
-import 'package:tz_app/core/ui/app_text.dart';
-import 'package:tz_app/core/ui/app_text_styles.dart';
-import 'package:tz_app/presentation/cubit/home/home_cubit.dart';
-import 'package:tz_app/presentation/cubit/tab_bar/tab_bar_cubit.dart';
-import 'package:tz_app/presentation/widgets/custom_card.dart';
-import 'package:tz_app/presentation/widgets/lines.dart';
-import 'package:tz_app/presentation/widgets/text_form_field_widget.dart';
+import 'package:tz_app/core/ui/components/custom_button.dart';
+import 'package:tz_app/core/ui/constants/app_colors.dart';
+import 'package:tz_app/core/ui/constants/app_text.dart';
+import 'package:tz_app/core/ui/constants/app_text_styles.dart';
+import 'package:tz_app/presentation/home/cubit/home/home_cubit.dart';
+import 'package:tz_app/presentation/home/cubit/tab_bar/tab_bar_cubit.dart';
+import 'package:tz_app/presentation/home/widgets/custom_card.dart';
+import 'package:tz_app/presentation/home/widgets/lines.dart';
+import 'package:tz_app/presentation/home/widgets/text_form_field_widget.dart';
 import 'package:tz_app/utils/tabbar.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,24 +23,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final TabController _tabController;
   final _formKey = GlobalKey<FormState>();
-  final departureController = TextEditingController();
-  final destinationController = TextEditingController();
+  final departureController = TextEditingController(text: 'Казань');
+  final destinationController = TextEditingController(text: 'Уфа');
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     context.read<HomeCubit>().getDriverData(
-          departureCity: 'Казань',
-          destinationCity: 'Уфа',
+          departureCity: departureController.text,
+          destinationCity: destinationController.text,
           date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
         );
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   @override
@@ -168,7 +163,9 @@ class PassengersView extends StatelessWidget {
                         label: BlocBuilder<HomeCubit, HomeState>(
                           builder: (context, state) {
                             return Text(
-                              state.date ?? AppText.date,
+                              state.date ??
+                                  DateFormat('yyyy-MM-dd')
+                                      .format(DateTime.now()),
                               style: AppTextStyles.textStyleF16(
                                 AppColors.black,
                               ),
@@ -191,47 +188,31 @@ class PassengersView extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
             child: Column(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: BlocBuilder<HomeCubit, HomeState>(
-                    builder: (context, state) {
-                      return ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            await context.read<HomeCubit>().getDriverData(
-                                  departureCity: context
-                                      .read<HomeCubit>()
-                                      .capitalizeFirstLetter(
-                                        departureController.text,
-                                      ),
-                                  destinationCity: context
-                                      .read<HomeCubit>()
-                                      .capitalizeFirstLetter(
-                                        destinationController.text,
-                                      ),
-                                  date: state.date ??
-                                      DateFormat('yyyy-MM-dd')
-                                          .format(DateTime.now()),
-                                );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: AppColors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          AppText.find,
-                          style: AppTextStyles.textStyleF16(
-                            AppColors.white,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) {
+                    return CustomButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await context.read<HomeCubit>().getDriverData(
+                                departureCity: context
+                                    .read<HomeCubit>()
+                                    .capitalizeFirstLetter(
+                                      departureController.text,
+                                    ),
+                                destinationCity: context
+                                    .read<HomeCubit>()
+                                    .capitalizeFirstLetter(
+                                      destinationController.text,
+                                    ),
+                                date: state.date ??
+                                    DateFormat('yyyy-MM-dd')
+                                        .format(DateTime.now()),
+                              );
+                        }
+                      },
+                      text: AppText.find,
+                    );
+                  },
                 ),
                 const SizedBox(height: 30),
                 BlocBuilder<HomeCubit, HomeState>(
